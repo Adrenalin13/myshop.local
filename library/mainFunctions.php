@@ -9,3 +9,4 @@ function loadPage($controllerName, $actionName = 'index') {
     $function = $actionName . 'Action';
     $function();
 }
+
