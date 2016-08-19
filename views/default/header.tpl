@@ -14,6 +14,4 @@
 
 {*Центральная часть*}
 <div id="centerColumn">
-    centerColumn
-
 
