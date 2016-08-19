@@ -26,3 +26,16 @@ function d($value = null, $die = 1) {
 
     if($die) die;
 }
+
+// Преобразование результата работы ф-ции выборки в ассоц. массив
+// @param recordset $rs набор строк - результат работы SELECT
+// return array
+function createSmartyRsArray($rs) {
+    if (!$rs) return false;
+
+    $smartyRs = array();
+    while ($row = mysqli_fetch_assoc($rs)) {
+        $smartyRs[] = $row;
+    }
+    return $smartyRs;
+}
