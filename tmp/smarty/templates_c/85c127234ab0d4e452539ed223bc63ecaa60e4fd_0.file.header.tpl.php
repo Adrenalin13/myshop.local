@@ -27,7 +27,7 @@ function content_57b5d99dc5f735_92601437 (Smarty_Internal_Template $_smarty_tpl)
 <head>
     <title><?php echo $_smarty_tpl->tpl_vars['pageTitle']->value;?>
 </title>
-    <link rel="stylesheet" href="<?php echo TemplateWebPath;?>
+    <link rel="stylesheet" href="<?php echo TEMPLATE_WEB_PATH;?>
 css/main.css" type="text/css">
 </head>
 <body>

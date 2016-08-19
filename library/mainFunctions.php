@@ -3,7 +3,7 @@
 // Определяем контроллер для загрузки страницы
 
 function loadPage($smarty, $controllerName, $actionName = 'index') {
-    include_once PathPrefix . $controllerName . PathPostfix;
+    include_once PATH_PREFIX . $controllerName . PATH_POSTFIX;
 
     // Формируем название функции
     $function = $actionName . 'Action';
@@ -14,7 +14,7 @@ function loadPage($smarty, $controllerName, $actionName = 'index') {
 // @param object $smarty объект шаблонизатора
 // @param string $templateName название файла шаблона
 function loadTemplate($smarty, $templateName) {
-    $smarty->display($templateName . TemplatePostfix);
+    $smarty->display($templateName . TEMPLATE_POSTFIX);
 }
 
 // функция отладки. Останавливает работу программы выводя значение переменной $value

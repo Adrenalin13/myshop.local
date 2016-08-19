@@ -1,6 +1,7 @@
 <?php
 
-include_once '../config/config.php'; // инициализация настроек
+include_once '../config/config.php';         // инициализация настроек
+include_once '../config/dbc.php';             // инициализация БД
 include_once '../library/mainFunctions.php'; // основные функции
 
 // Пишем GET запрос в строку браузера http://myshop.local/www/?controller=index&action=test
