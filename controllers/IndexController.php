@@ -15,7 +15,7 @@ function testAction() {
 // @param object $smarty шаблонизатор
 function indexAction($smarty) {
 
-    $rsCategories = getAllMainCartWithChildren(); // rs- record set - набор данных категорий
+    $rsCategories = getAllMainCatsWithChildren(); // rs- record set - набор данных категорий
     $rsProducts = getLastProducts(16); // Последние 16 добавленных товаров
 
     $smarty->assign('pageTitle', 'Главная страница сайта');
