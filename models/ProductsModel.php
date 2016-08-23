@@ -7,7 +7,9 @@
 // @param integer $limit лимит товаров
 // @return array массив товаров
 function getLastProducts($limit = null) {
-    $query = "SELECT * FROM products ORDER BY id DESC";
+    $query = "SELECT *
+              FROM products
+              ORDER BY id DESC";
     if ($limit) {
         $query .= " LIMIT {$limit}";
     }
@@ -32,4 +34,19 @@ function getProductsByCat($itemId) {
     $rs = mysqli_query($dbc, $query); // получаем данные
 
     return createSmartyRsArray($rs);   // преобразовываем их в ассоциативный массив
+}
+
+
+// Получить данные продукта по ID
+// @param integer $itemId ID продукта
+// @return array массив данных продукта
+function getProductById($itemId) {
+    $itemId = intval($itemId);
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "SELECT *
+              FROM products
+              WHERE id = '{$itemId}'";
+
+    $rs = mysqli_query($dbc, $query);
+    return mysqli_fetch_assoc($rs);
 }
