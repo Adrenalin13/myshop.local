@@ -5,5 +5,5 @@
 <img src="/images/products/{$rsProduct['image']}" width="575">
     Стоимость: {$rsProduct['price']}
 
-<a href="#" alt="Добавить в карзину">Добавить в карзину</a>
+<a id="addCart_{$rsProduct['id']}" href="#" onClick="addToCart ({$rsProduct['id']}); return false;" alt="Добавить в карзину">Добавить в карзину</a>
 <p>Описание:  <br>{$rsProduct['description']}</p>

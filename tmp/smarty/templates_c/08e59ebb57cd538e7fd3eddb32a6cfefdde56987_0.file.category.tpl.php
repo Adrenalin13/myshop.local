@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2016-08-23 12:45:39
+/* Smarty version 3.1.30, created on 2016-08-24 16:50:47
   from "D:\OpenServer\domains\myshop.local\views\default\category.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_57bc1b4325af70_35612124',
+  'unifunc' => 'content_57bda637cb8034_15831355',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '08e59ebb57cd538e7fd3eddb32a6cfefdde56987' => 
     array (
       0 => 'D:\\OpenServer\\domains\\myshop.local\\views\\default\\category.tpl',
-      1 => 1471945530,
+      1 => 1472046627,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_57bc1b4325af70_35612124 (Smarty_Internal_Template $_smarty_tpl) {
+function content_57bda637cb8034_15831355 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 
@@ -36,13 +36,13 @@ foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
 $_smarty_tpl->tpl_vars['__smarty_foreach_products']->value['iteration']++;
 ?>
         <div style="float:left; padding: 0px 30px 40px 0px;">
-            <a href="/?controller=product&id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-">     
+            <a href="/product/<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
+/">      
                 <img src="/images/products/<?php echo $_smarty_tpl->tpl_vars['item']->value['image'];?>
 " width="100" >
             </a><br>
-            <a href="/?controller=product&id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+            <a href="/product/<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
+/"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
 </a>     
         </div>
 
@@ -62,9 +62,9 @@ $_from = $_smarty_tpl->smarty->ext->_foreach->init($_smarty_tpl, $_smarty_tpl->t
 if ($_from !== null) {
 foreach ($_from as $_smarty_tpl->tpl_vars['item']->value) {
 ?>
-    <h2><a href="/?controller=category&id=<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
-</a></h2>   
+    <h2><a href="/category/<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
+/"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
+</a></h2>    
 <?php
 }
 }
