@@ -3,11 +3,11 @@
 // Модель для таблицы категорий (categories)
 
 
-
 // Получить дочерние категории для категории $catId
 // @param integer $catId ID категории
 // @return array массив дочерних категорий
-function getChildrenForCat($catId) {
+function getChildrenForCat($catId)
+{
     $query = "SELECT *
               FROM categories
               WHERE parent_id = '{$catId}';";
@@ -20,7 +20,8 @@ function getChildrenForCat($catId) {
 
 // Получить главные категории с привязками дочерних
 // @return array массив категорий
-function getAllMainCatsWithChildren() {
+function getAllMainCatsWithChildren()
+{
     $query = "SELECT *
               FROM categories
               WHERE parent_id = 0;";
@@ -44,7 +45,8 @@ function getAllMainCatsWithChildren() {
 // Получить данные категории по id
 // @param integer $catId ID категории
 // @return array массив - строка категории
-function getCatById($catId) {
+function getCatById($catId)
+{
     $catId = intval($catId); // защита от SQL-injection
     $query = "SELECT *
               FROM categories
