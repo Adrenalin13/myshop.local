@@ -9,7 +9,7 @@
 
 {*Хеадер*}
 <div id="header">
-    <a href="http://myshop.local"><h1>My shop - Интернет магазин</h1></a>
+    <a href="http://myshop.local"><h1>My shop</a> - Интернет магазин</h1>
 </div>
 
 {include file='leftcolumn.tpl'}
