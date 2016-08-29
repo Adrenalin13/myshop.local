@@ -14,6 +14,26 @@
         {/foreach}
 </div>
 
+{if isset($arUser)}
+    <div id="userBox">
+        <a href="/user/" id="userLink">{$arUser['displayName']}</a><br>
+        <a href="/user/logout/" onclick="logout();">Выход</a>
+    </div>
+
+{else}
+
+<div id="userBox" class="hideme">
+    <a href="#" id="userLink"></a><br>
+    <a href="/user/logout/" onClick="logout();">Выход</a>
+</div>
+
+<div id="loginBox">
+    <div class="menuCaption">Авторизация</div>
+    <input type="text" id="loginEmail" name="loginEmail" value=""/><br>
+    <input type="password" id="loginPwd" name="loginPwd" value=""/><br>
+    <input type="button" onClick="login();" value="Войти"/>
+</div>
+
 <div id="registerBox">
     <div class="menuCaption showHidden" onClick="showRegisterBox();">Регистрация</div>
     <div id="registerBoxHidden">
@@ -26,6 +46,8 @@
         <input type="button" onclick="registerNewUser();" value="Зарегистрироваться">
     </div>
 </div>
+
+{/if}
 
 <div class="menuCaption">Корзина</div>
     <a href="/cart/" title="Перейти в корзину">В корзине</a>

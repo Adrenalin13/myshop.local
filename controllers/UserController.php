@@ -1,6 +1,6 @@
 <?php
 /**
-Контроллер функций пользователя
+ * Контроллер функций пользователя
  */
 
 
@@ -30,13 +30,13 @@ function registerAction()
     $resData = null;
     $resData = checkRegisterParams($email, $pwd1, $pwd2);
 
-    if (! $resData && checkUserEmail($email)) {
+    if (!$resData && checkUserEmail($email)) {
         $resData['success'] = false;
         $resData['message'] = "Пользователь с таким email('{$email}') уже зарегистрирован.";
     }
 
     if (!$resData) {
-        $pwdMD5 = md5(pwd1);
+        $pwdMD5 = md5($pwd1);
 
         $userData = registerNewUser($email, $pwdMD5, $name, $phone, $adress);
         if ($userData['success']) {
@@ -53,6 +53,54 @@ function registerAction()
             $resData['success'] = 0;
             $resData['message'] = 'Ошибка регистрации';
         }
+    }
+
+    echo json_encode($resData);
+}
+
+
+/*
+Разлогинивание пользователя
+*/
+function logoutAction()
+{
+    if (isset($_SESSION['user'])) {
+        unset($_SESSION['user']);
+        unset($_SESSION['cart']);
+    }
+
+    redirect('/');
+}
+
+
+/*
+AJAX авторизация пользователя
+@return json массив данных пользователя
+*/
+function loginAction()
+{
+    $email = isset($_REQUEST['email']) ? $_REQUEST['email'] : null;
+    $email = trim($email);
+
+    $pwd = isset($_REQUEST['pwd']) ? $_REQUEST['pwd'] : null;
+    $pwd = trim($pwd);
+
+    $userData = loginUser($email, $pwd);
+
+    if ($userData['success']) {
+        $userData = $userData[0];
+
+        $_SESSION['user'] = $userData;
+        $_SESSION['user']['displayName'] = $userData['name'] ? $userData['name'] : $userData['email'];
+
+        $resData = $_SESSION['user'];
+        $resData['success'] = 1;
+
+        //$resData['userName'] = $userData['name'] ? $userData['name'] : $userData['email'];
+        //$resData['userEmail'] = $email;
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Неверный логин или пароль';
     }
 
     echo json_encode($resData);

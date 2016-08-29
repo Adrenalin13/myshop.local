@@ -60,8 +60,8 @@ function conversionPrice(itemId) {
  */
 function getData(obj_form) {
     var hData = {};
-    $('input, textarea, select', obj_form).each(function() {
-        if (this.name && this.name!='') {
+    $('input, textarea, select', obj_form).each(function () {
+        if (this.name && this.name != '') {
             hData[this.name] = this.value;
             console.log('hData[' + this.name + '] = ' + hData[this.name]);
         }
@@ -87,18 +87,61 @@ function registerNewUser() {
                 //> Блок в левом столбце
                 $('#registerBox').hide();
 
-                // $('#userLink').attr('href', '/user/');
-                // $('#userLink').html(data['userName']);
-                // $('#userBox').show();
+                $('#userLink').attr('href', '/user/');
+                $('#userLink').html(data['userName']);
+                $('#userBox').show();
                 //<
 
                 //> Страница заказа
-                // $('#loginBox').hide();
-                // $('#btnSaveOrder').show();
+                 $('#loginBox').hide();
+                 $('#btnSaveOrder').show();
                 //<
             } else {
                 alert(data['message']);
             }
         }
     });
+}
+
+
+/*
+ Авторизация пользователя
+ */
+function login() {
+    var email = $('#loginEmail').val();
+    var pwd = $('#loginPwd').val();
+
+    var postData = "email="+ email +"&pwd=" +pwd; //var postData = getData('#loginBox');
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/user/login/",
+        data: postData,
+        dataType: 'json',
+        success: function(data) {
+            if (data['success']) {
+                $('#registerBox').hide();
+                $('#loginBox').hide();
+
+                $('#userLink').attr('href', '/user/');
+                $('#userLink').html(data['displayName']);
+                $('#userBox').show();
+
+            } else {
+                alert(data['message']);
+            }
+        }
+    });
+}
+
+/*
+Показать или спрятать форму регистрации
+*/
+function showRegisterBox() {
+    if ($("#registerBoxHidden").css('display') != 'block') {
+        $("#registerBoxHidden").show();
+    } else {
+        $("#registerBoxHidden").hide();
+    }
 }
