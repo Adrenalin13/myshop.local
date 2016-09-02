@@ -55,7 +55,7 @@ function getProductById($itemId)
 }
 
 
-/*
+/**
 Получить список продуктов из массива идентификаторов (ID's)
 
 @param type $itemsIds массив идентификаторов продуетов

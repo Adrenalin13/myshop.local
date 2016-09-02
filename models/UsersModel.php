@@ -110,6 +110,7 @@ function checkUserEmail($email)
 
 /*
 Авторизация пользователя
+ * 
 @param string $email почта (логин)
 @param string $pwd пароль
 @return array массив данных пользователя
@@ -135,5 +136,44 @@ function loginUser($email, $pwd)
         $rs['success'] = 0;
     }
 
+    return $rs;
+}
+
+/**
+ * Изменение данных пользователя на странице пользователя
+ * 
+ * @param string $name имя
+ * @param string $phone тел
+ * @param string $adress адрес
+ * @param string $pwd1 пароль
+ * @param string $pwd2 повтор пароля
+ * @param string $curPwd текущий пароль
+ * @return boolean TRUE в случае успеха
+ */
+function updateUserData($name, $phone, $adress, $pwd1, $pwd2, $curPwd)
+{
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+
+    $email  = htmlspecialchars(mysqli_real_escape_string($dbc, $_SESSION['user']['email']));
+    $name   = htmlspecialchars(mysqli_real_escape_string($dbc, $name));
+    $phone  = htmlspecialchars(mysqli_real_escape_string($dbc, $phone));
+    $adress = htmlspecialchars(mysqli_real_escape_string($dbc, $adress));
+    $pwd1   = trim($pwd1);
+    $pwd2   = trim($pwd2);
+
+    $newPwd = null;
+    if ($pwd1 && ($pwd1 == $pwd2)) {
+        $newPwd = md5($pwd1);
+    }
+
+    $query = "UPDATE users SET ";
+
+    if ($newPwd) {
+        $query .= "`pwd` = '{$newPwd}', ";
+    }
+
+    $query .= "`name` = '{$name}', `phone` = '{$phone}', `adress` = '{$adress}' WHERE `email` = '{$email}' AND `pwd` = '{$curPwd}' LIMIT 1";
+    $rs = mysqli_query($dbc, $query);
+    
     return $rs;
 }
