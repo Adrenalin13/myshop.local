@@ -55,3 +55,27 @@ function makeNewOrder($name, $phone, $adress)
     return false;
 }
 
+/**
+ * Получить список заказов с привязкой к продуктам для пользователя $userId
+ *
+ * @param integer $userId ID пользователя
+ * @return array массив заказов с привязкой к продуктам
+*/
+function getOrdersWithProductsByUser($userId)
+{
+    $userId = intval($userId);
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "SELECT * FROM orders
+              WHERE `user_id` = '{$userId}'
+              ORDER BY id DESC";
+
+    $rs = mysqli_query($dbc, $query);
+
+    $smartyRs = array();
+    while ($row = mysqli_fetch_assoc($rs)) {
+        $smartyRs[] = $row;
+    }
+
+    return $smartyRs;
+}
+
