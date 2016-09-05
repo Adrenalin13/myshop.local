@@ -5,6 +5,8 @@
 // Подключаем модели
 include_once '../models/CategoriesModel.php';
 include_once '../models/ProductsModel.php';
+include_once '../models/OrdersModel.php';
+include_once '../models/PurchaseModel.php';
 
 
 // Добавление продукта в карзину
@@ -141,4 +143,58 @@ function orderAction($smarty) {
     loadTemplate($smarty, 'header');
     loadTemplate($smarty, 'order');
     loadTemplate($smarty, 'footer');
+}
+
+/**
+ * Ajax ф-ция сохранения заказа
+ *
+ * @param array $_SESSION['saleCart'] массив покупаемых продуктов
+ * @return json информация о результате выполнения
+*/
+function saveorderAction()
+{
+    // получаем массив покупаемых товаров
+    $cart = isset($_SESSION['saleCart']) ? $_SESSION['saleCart'] : null;
+    // если корзина пуста, формируем ответ с ошибкой, отдаем его в формате json и выходим из ф-ции
+    if (!$cart) {
+        $resData['success'] = 0;
+        $resData['message'] = 'Нет товаров для заказа';
+        echo json_encode($resData);
+        return;
+    }
+
+    // собираем данные из скрытых полей $name, $phone, $adress
+    $name = $_POST['name'];            // желательно сделать проверку на существование переменных, как в $cart
+    $phone = $_POST['phone'];
+    $adress = $_POST['adress'];
+
+    // создание самого заказа и получение его ID
+    $orderId = makeNewOrder($name, $phone, $adress);
+    // создадим новую запись в таблице orders и получим ее id/ для
+    // того, чтобы потом создать несколько записей в таблице покупок(purchase) с привязкой к уже созданному заказу
+    //(orders). описываем ф-цию в модели заказов
+
+    // если заказ не создан - выдаем ошибку, завершаем ф-цию
+    if (!$orderId) {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка создания заказа';
+        echo json_encode($resData);
+        return;
+    }
+
+    // созхраняем товары для созданного заказа
+    $res = setPurchaseForOrder($orderId, $cart);
+
+    // если успешно, то формируем ответ и удаляем переменные из корзины
+    if ($res) {
+        $resData['success'] = 1;
+        $resData['message'] = 'Заказ сохранен';
+        unset($_SESSION['saleCart']);
+        unset($_SESSION['cart']);
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка внесения данных для заказа № ' . $orderId;
+    }
+
+    echo json_encode($resData);
 }

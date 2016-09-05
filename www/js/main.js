@@ -133,7 +133,7 @@ function login() {
                 $('#phone').val(data['phone']);
                 $('#adress').val(data['adress']);
                 //<
-                
+
                 $('#btnSaveOrder').show();
 
             } else {
@@ -186,6 +186,29 @@ function updateUserData() {
             if (data['success']) {
                 $('#userLink').html(data['userName']);
                 alert(data['message']);
+            } else {
+                alert(data['message']);
+            }
+        }
+    });
+}
+
+/**
+ * Сохранение заказа
+ *
+*/
+function saveOrder() {
+    var postData = getData('form'); // getData пройдет по всем объектам внутри тега <form> и соберет всю инфу
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/cart/saveorder/",    // в CartController создаем новый экшн saveorderAction
+        data: postData,
+        dataType: 'json',
+        success: function(data) {  // если все данные пришли в бд успешно, то вывадится месседж и редиректит
+            if (data['success']) {
+                alert(data['message']);
+                document.location = '/';
             } else {
                 alert(data['message']);
             }
