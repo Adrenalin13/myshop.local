@@ -17,7 +17,7 @@ function makeNewOrder($name, $phone, $adress)
 {
     // инициализация переменных для заполнения таблиц заказов // переменные нужно обезопасить от SQL-injection
     $userId      = $_SESSION['user']['id'];
-    $comment     = "id пользователя: {$userId}<br>
+    $comment     = "ID пользователя: {$userId}<br>
                     Имя: {$name}<br>              
                     Тел: {$phone}<br>
                     Адрес: {$adress}";
@@ -73,7 +73,13 @@ function getOrdersWithProductsByUser($userId)
 
     $smartyRs = array();
     while ($row = mysqli_fetch_assoc($rs)) {
-        $smartyRs[] = $row;
+        $rsChildren = getPurchaseForOrder($row['id']);  // получить покупки для заказа. Возвращает массив покупок для
+        // заказа
+
+        if ($rsChildren) {
+            $row['children'] = $rsChildren;
+            $smartyRs[] = $row;
+        }
     }
 
     return $smartyRs;

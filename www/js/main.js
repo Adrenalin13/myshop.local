@@ -119,7 +119,7 @@ function login() {
         url: "/user/login/",
         data: postData,
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             if (data['success']) {
                 $('#registerBox').hide();
                 $('#loginBox').hide();
@@ -160,12 +160,12 @@ function showRegisterBox() {
  */
 function updateUserData() {
     console.log("js - updateUserData()");
-    var phone  = $('#newPhone').val();
+    var phone = $('#newPhone').val();
     var adress = $('#newAdress').val();
-    var pwd1   = $('#newPwd1').val();
-    var pwd2   = $('#newPwd2').val();
+    var pwd1 = $('#newPwd1').val();
+    var pwd2 = $('#newPwd2').val();
     var curPwd = $('#curPwd').val();
-    var name   = $('#newName').val();
+    var name = $('#newName').val();
 
     var postData = {
         phone: phone,
@@ -182,7 +182,7 @@ function updateUserData() {
         url: "/user/update/",
         data: postData,
         dataType: 'json',
-        success: function(data) {
+        success: function (data) {
             if (data['success']) {
                 $('#userLink').html(data['userName']);
                 alert(data['message']);
@@ -196,7 +196,7 @@ function updateUserData() {
 /**
  * Сохранение заказа
  *
-*/
+ */
 function saveOrder() {
     var postData = getData('form'); // getData пройдет по всем объектам внутри тега <form> и соберет всю инфу
     $.ajax({
@@ -205,7 +205,7 @@ function saveOrder() {
         url: "/cart/saveorder/",    // в CartController создаем новый экшн saveorderAction
         data: postData,
         dataType: 'json',
-        success: function(data) {  // если все данные пришли в бд успешно, то вывадится месседж и редиректит
+        success: function (data) {  // если все данные пришли в бд успешно, то вывадится месседж и редиректит
             if (data['success']) {
                 alert(data['message']);
                 document.location = '/';
@@ -214,4 +214,16 @@ function saveOrder() {
             }
         }
     });
+}
+
+/**
+ * ПОказывать или спрятать данные о текущем заказе на странице пользователя в заказах
+ */
+function showProducts(id) {
+    var objName = "#purchasesForOrderId_" + id;
+    if ($(objName).css('display') != 'table-row') {
+        $(objName).show();
+    } else {
+        $(objName).hide();
+    }
 }
