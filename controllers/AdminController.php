@@ -47,3 +47,47 @@ function addnewcatAction()                       // экшн дергает фу
     echo json_encode($resData);
     return;             // далее вешаем это действие на кнопку "добавить категорию"
 }
+
+
+/**
+ * Страница управления категориями . Первое что делаем - новый экшн
+ *
+ * @param type $smarty
+*/
+function categoryAction($smarty)
+{
+    $rsCategories = getAllCategories();
+    $rsMainCategories = getAllMainCategories();
+
+    $smarty->assign('rsCategories', $rsCategories);
+    $smarty->assign('rsMainCategories', $rsMainCategories);
+    $smarty->assign('pageTitle', 'Управление сайтом');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminCategory');
+    loadTemplate($smarty, 'adminFooter');
+}
+
+
+/**
+ * четвертый шаг экшн вызавающий ф-ция из CategoryModel
+*/
+function updatecategoryAction()
+{
+    $itemId        = $_POST['itemId'];
+    $parentId     = $_POST['parentId'];
+    $newName  = $_POST['newName'];
+
+    $res = updateCategoryData($itemId, $parentId, $newName);
+
+    if ($res) {
+        $resData['success'] = 1;
+        $resData['message'] = 'Катогория обновлена';
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка изменения данных категории';
+    }
+
+    echo json_encode($resData);
+    return;  // далее делаем js ф-цию, дергающую данный экшн
+}

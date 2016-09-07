@@ -100,3 +100,56 @@ function insertCat($catName, $catParentId = 0)
 
     return $id;    // далее вызываем функцию через админ контроллер
 }
+
+/**
+ * второй шаг для страницы категорий в админке:
+ * Получить все категории
+ *
+ * @return array массив категорий
+*/
+function getAllCategories()
+{
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "SELECT *
+              FROM categories
+              ORDER BY parent_id ASC";
+
+    $rs = mysqli_query($dbc, $query);
+
+    return createSmartyRsArray($rs);           // далее создаем шаблон adminCategory.tpl
+}
+
+
+/**
+ * третий шаг для изменения страницы категорий в админке
+ * Обновление категорий
+ *
+ *
+ * @param integer $itemId ID категории
+ * @param integer $parentId ID главной категории
+ * @param string $newName новое имя категории
+ * @return type
+*/
+function updateCategoryData($itemId, $parentId = -1, $newName = '')
+{
+    $set = array();
+
+    if ($newName) {
+        $set[] = "`name` = '{$newName}'";
+    }
+
+    if ($parentId > -1) {
+        $set[] = "`parent_id` = '{$parentId}'";
+    }
+
+    $setStr = implode($set, ", ");   // массив set[] превращаем в строку, где каждый элемент разделен запятой и пробелом
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "UPDATE categories
+              SET {$setStr}
+              WHERE id = '{$itemId}'";
+
+    $rs = mysqli_query($dbc, $query);
+
+    return $rs;  // далее в AdminController создаем экшт, который будет пользоваться этой ф-цией, и вызывать дейстаие
+    // по клику
+}
