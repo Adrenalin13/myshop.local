@@ -57,3 +57,46 @@ function getCatById($catId)
 
     return mysqli_fetch_assoc($rs);   // преобразовываем их в ассоциативный массив
 }
+
+
+/**
+ * Получаем главные категории для админки
+ *
+ * @return array массив категорий
+*/
+function getAllMainCategories()
+{
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "SELECT *
+              FROM categories
+              WHERE parent_id = 0";
+
+    $rs = mysqli_query($dbc, $query);
+
+    return createSmartyRsArray($rs);
+}
+
+
+/**
+ *Добавление новой категории товаров из админки в БД
+ *
+ * @param string $catName название категории
+ * @param integer $catParentId ID ролительской категории
+ * @return integer id новой категории
+*/
+function insertCat($catName, $catParentId = 0)
+{
+    // готовим запрос
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "INSERT INTO categories
+              (`parent_id`, `name`)
+              VALUES ('{$catParentId}', '{$catName}')";
+
+    // выполняем запрос
+    mysqli_query($dbc, $query);
+
+    // получаем Id добавленной записи
+    $id = mysqli_insert_id($dbc);
+
+    return $id;    // далее вызываем функцию через админ контроллер
+}

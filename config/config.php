@@ -8,13 +8,17 @@ define('PATH_POSTFIX', 'Controller.php');
 
 //> Используемый шаблон Smarty
 $template = 'default';
+$templateAdmin = 'admin'; //шаблон для админки
 
 // Пути к файлам шаблонов (.tpl)
 define('TEMPLATE_PREFIX', "../views/{$template}/");
+define('TEMPLATE_ADMIN_PREFIX', "../views/{$templateAdmin}/");
 define('TEMPLATE_POSTFIX', '.tpl');
+
 
 // Пути к файлам шаблонов в вебпространставе
 define('TEMPLATE_WEB_PATH', "/templates/{$template}/");
+define('TEMPLATE_ADMIN_WEB_PATH', "/templates/{$templateAdmin}/");
 //<
 
 //> Инициализация шаблонизатора Smarty
