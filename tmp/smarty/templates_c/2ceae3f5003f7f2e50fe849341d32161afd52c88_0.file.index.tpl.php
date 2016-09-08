@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.30, created on 2016-09-06 12:42:07
+/* Smarty version 3.1.30, created on 2016-09-08 17:07:19
   from "E:\Other\OpenServer\domains\myshop.local\views\default\index.tpl" */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.30',
-  'unifunc' => 'content_57ce8f6fdfb160_88748800',
+  'unifunc' => 'content_57d1709706e841_97575492',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '2ceae3f5003f7f2e50fe849341d32161afd52c88' => 
     array (
       0 => 'E:\\Other\\OpenServer\\domains\\myshop.local\\views\\default\\index.tpl',
-      1 => 1472046368,
+      1 => 1473343278,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_57ce8f6fdfb160_88748800 (Smarty_Internal_Template $_smarty_tpl) {
+function content_57d1709706e841_97575492 (Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 
@@ -34,13 +34,13 @@ $_smarty_tpl->tpl_vars['__smarty_foreach_products']->value['iteration']++;
 ?>
     <div style="float: left; padding: 0px 30px 40px 0px;">
         <a href="/product/<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
-/">  
+/">
             <img src="/images/products/<?php echo $_smarty_tpl->tpl_vars['item']->value['image'];?>
 " width="100">
         </a><br>
         <a href="/product/<?php echo $_smarty_tpl->tpl_vars['item']->value['id'];?>
 /"><?php echo $_smarty_tpl->tpl_vars['item']->value['name'];?>
-</a>  
+</a>
     </div>
     <?php if ((isset($_smarty_tpl->tpl_vars['__smarty_foreach_products']->value['iteration']) ? $_smarty_tpl->tpl_vars['__smarty_foreach_products']->value['iteration'] : null) % 3 == 0) {?>
         <div style="clear: both;"></div>

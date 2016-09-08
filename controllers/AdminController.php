@@ -91,3 +91,114 @@ function updatecategoryAction()
     echo json_encode($resData);
     return;  // далее делаем js ф-цию, дергающую данный экшн
 }
+
+
+/**
+ * Шаг 1 Страница управления товарами
+ *
+ * @param type $smarty
+*/
+function productsAction($smarty)
+{
+    $rsCategories = getAllCategories();   // все категории требуются чтобы иметь возможность выводить их на странице
+    $rsProducts   = getProducts();
+
+    $smarty->assign('rsCategories', $rsCategories);
+    $smarty->assign('rsProducts', $rsProducts);
+
+    $smarty->assign('pageTile', 'Управление сайтом');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminProducts');
+    loadTemplate($smarty, 'adminFooter');  // далее создаем ф-цию getProducts в ProductsModel
+}
+
+
+/**
+ * шаг 5й создаем экшн на кнопку импользуя созданную ф-цию insertProduct
+*/
+function addproductAction()
+{
+    $itemName  = $_POST['itemName'];
+    $itemPrice = $_POST['itemPrice'];
+    $itemDesc  = $_POST['itemDesc'];
+    $itemCat   = $_POST['itemCatId'];
+
+    $res = insertProduct($itemName, $itemPrice, $itemDesc, $itemCat);
+
+    if ($res) {
+        $resData['success'] = 1;
+        $resData['message'] = 'Изменения успешно внесены';
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка изменения данных';
+    }
+
+    echo json_encode($resData);
+    return;   // далее создаем функцию обработки onclick в admin.js
+}
+
+
+/**
+ * шаг 9 создаем экшн управляющий ф-цией обновления продуктов
+*/
+function updateproductAction()
+{
+    $itemId     = $_POST['itemId'];
+    $itemName   = $_POST['itemName'];
+    $itemPrice  = $_POST['itemPrice'];
+    $itemStatus = $_POST['itemStatus'];
+    $itemDesc   = $_POST['itemDesc'];
+    $itemCat    = $_POST['itemCatId'];
+
+    $res = updateProduct($itemId, $itemName, $itemPrice, $itemStatus, $itemDesc, $itemCat);
+
+    if ($res) {
+        $resData['success'] = 1;
+        $resData['message'] = 'Изменения успешно внесены';
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка изменения данных';
+    }
+
+    echo json_encode($resData);
+    return;    // далее в admin.js создаем ф-цию на onclick сохраняющую изменения
+}
+
+
+/**
+ * Шаг 11 реализуем загрузку изображений на сервер
+*/
+function uploadAction() //название upload берем из верстки /admin/upload/
+{
+    $maxSize = 2 * 1024 * 1024; //максимальный размер файла 2м
+
+    // получаем id элемента из верстки
+    $itemId = $_POST['itemId'];
+    // получаем расширение загружаемого файла из верстки
+    $ext = pathinfo($_FILES['filename']['name'], PATHINFO_EXTENSION);
+    // создаем имя файла
+    $newFileName = $itemId . '.' . $ext;
+
+    if ($_FILES["filename"]["size"] > $maxSize) {
+        echo ("Размер файла превышает 2 мегабайта");
+        return;
+    }
+
+    // загружаем файл . Определяем загружен ли файл методом http POST чтобы не загрузили опасные файлы
+    if (is_uploaded_file($_FILES['filename']['tmp_name'])) {
+        // если файл загружен, то перенаправляем его из временной директории в конечную
+        $res = move_uploaded_file($_FILES['filename']['tmp_name'], $_SERVER['DOCUMENT_ROOT'] . '/images/products/' .
+            $newFileName);
+        if($res) {
+            // обновляем запись в БД , для данного продукта указываем его имя картинки
+            $res = updateProductImage($itemId, $newFileName);
+            if ($res) {
+                redirect('/admin/products/'); // если все хорошо= обновляем страницу
+            }
+        }
+    } else {
+        echo ("Ошибка загрузки файла");
+    }
+
+} // далее создаем ф-цию updateProductImage в ProductsModel
