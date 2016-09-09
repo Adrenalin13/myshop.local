@@ -202,3 +202,63 @@ function uploadAction() //название upload берем из верстки
     }
 
 } // далее создаем ф-цию updateProductImage в ProductsModel
+
+
+/**
+ * СОздание страницы заказа.
+ * шаг 1 Экшн для главной страницы
+*/
+function ordersAction($smarty)
+{
+    $rsOrders = getOrders(); // тут получим все данные заказов
+
+    $smarty->assign('rsOrders', $rsOrders);
+    $smarty->assign('pageTitle', 'Заказы');
+
+    loadTemplate($smarty, 'adminHeader');
+    loadTemplate($smarty, 'adminOrders');
+    loadTemplate($smarty, 'adminFooter');
+} // далее в OrdersModel создадим getOrders, чтобы получить данные заказов
+
+
+/**
+ * 6 Шаг.   Делаем экшн для Статуса и Даты оплаты, который бедем вызывать из js
+*/
+// чтобы установить новый статус для заказа
+function setorderstatusAction()
+{
+    $itemId = $_POST['itemId'];
+    $status = $_POST['status'];
+
+    $res = updateOrderStatus($itemId, $status);
+
+    if ($res) {
+        $resData['success'] = 1;
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка установки статуса';
+    }
+
+    echo json_encode($resData);
+    return;
+}
+
+// экшн чтобы установить дату оплаты
+function setorderdatepaymentAction()
+{
+    $itemId = $_POST['itemId'];
+    $datePayment = $_POST['datePayment'];
+
+    $res = updateOrderDatePayment($itemId, $datePayment);
+
+    if ($res) {
+        $resData['success'] = 1;
+    } else {
+        $resData['success'] = 0;
+        $resData['message'] = 'Ошибка установки даты оплаты';
+    }
+
+    echo json_encode($resData);
+    return;
+}
+// -------------Далее в admin.js создадим ф-ции, вызывающие данные экшены

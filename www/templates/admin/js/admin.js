@@ -122,3 +122,63 @@ function updateProduct(itemId) {
     });
 } // далее реализуем загрузку изображения на сервер в AdminController
 
+
+/**
+ * ПОказывать или спрятать данные о текущем заказе на странице пользователя в заказах
+ */
+function showProducts(id) {
+    var objName = "#purchasesForOrdersId_" + id;
+    if ($(objName).css('display') != 'table-row') {
+        $(objName).show();
+    } else {
+        $(objName).hide();
+    }
+}
+
+
+/**
+ * 7 Шаг . Ф-ции вызывающие из AdminController изменение Статуса и Даты оплаты
+*/
+// изменяем Статус
+function updateOrderStatus(itemId) {
+    var status = $('#itemStatus_ + itemId').attr('checked');
+    if (! status) {
+        status = 0
+    } else {
+        status = 1
+    }
+
+    var postData = {itemId: itemId, status: status};
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/setorderstatus/",
+        data: postData,
+        dataType: 'json',
+        success: function(data) {
+            if (! data['success']) {
+                alert(data['message']);
+            }
+        }
+    });
+}
+
+// изменяем Дату оплаты
+function updateDatePayment(itemId) {
+    var datePayment = $('#datePayment_' + itemId).val();
+    var postData = {itemId: itemId, datePayment: datePayment};
+
+    $.ajax({
+        type: 'POST',
+        async: false,
+        url: "/admin/setorderdatepayment/",
+        data: postData,
+        dataType: 'json',
+        success: function(data) {
+            if (! data['success']) {
+                alert(data['message']);
+            }
+        }
+    });
+}

@@ -85,3 +85,79 @@ function getOrdersWithProductsByUser($userId)
     return $smartyRs;
 }
 
+
+/**
+ * 2 шаг странизы заказов в админке. ПОлучение данных заказов
+*/
+function getOrders()
+{
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "SELECT o.*, u.name, u.email, u.phone, u.adress
+              FROM orders AS `o`
+              LEFT JOIN users AS `u`
+              ON o.user_id = u.id
+              ORDER BY id DESC";
+
+    $rs = mysqli_query($dbc, $query);
+
+    $smartyRs = array();
+    while ($row = mysqli_fetch_assoc($rs)) {
+        $rsChildren = getProductsForOrders($row['id']);
+
+        if ($rsChildren) {
+            $row['children'] = $rsChildren;
+            $smartyRs[] = $row;
+        }
+    }
+    return $smartyRs;
+} // далее тут же создаем ф-цию getProductsForOrders
+
+
+/**
+ * шаг 3 ПОлучить продукты определенного заказа
+ *
+ * @param integer $orderId ID заказа
+ * @return array массив данных товаров
+*/
+function getProductsForOrders($orderId)
+{
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "SELECT *
+              FROM purchase AS pe
+              LEFT JOIN products AS ps
+              ON pe.product_id = ps.id
+              WHERE (`order_id` = '{$orderId}')";
+
+    $rs = mysqli_query($dbc, $query);
+    return createSmartyRsArray($rs);
+} // далее делаем верстку adminOrders.tpl
+
+
+/**
+ * 5 Шаг .реализуем работу чекбокса "статус" и ПОля "данные оплаты"
+*/
+// Обновление статуса по чекбоксу
+function updateOrderStatus($itemId, $status) // параметры Идентификатор заказа и Статус
+{
+    $status = intval($status);
+
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "UPDATE orders
+              SET `status` = '{$status}'
+              WHERE id = '{$itemId}'";
+
+    $rs = mysqli_query($dbc, $query);
+    return $rs;
+}
+
+// Обновляем дату оплаты заказа
+function updateOrderDatePayment($itemId, $datePayment)
+{
+    $dbc = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    $query = "UPDATE orders
+              SET `date_payment` = '{$datePayment}'
+              WHERE id = '{$itemId}'";
+
+    $rs = mysqli_query($dbc, $query);
+    return $rs;
+}                                  // далее в AdminController для данных событий делаем экшн
