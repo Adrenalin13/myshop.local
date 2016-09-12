@@ -1,0 +1,4 @@
+AuthType Basic
+AuthName admin
+AuthUserFile e:/Other\OpenServer\domains\myshop.local\pwdaccess
+require valid-user

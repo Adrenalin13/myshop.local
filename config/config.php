@@ -8,6 +8,7 @@ define('PATH_POSTFIX', 'Controller.php');
 
 //> Используемый шаблон Smarty
 $template = 'default';
+//$template = 'texturia';
 $templateAdmin = 'admin'; //шаблон для админки
 
 // Пути к файлам шаблонов (.tpl)
